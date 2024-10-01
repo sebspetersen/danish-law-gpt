@@ -15,17 +15,32 @@
     </form>
     <div id="answer"></div>
     <script>
-        document.getElementById('questionForm').onsubmit = async (e) => {
-            e.preventDefault();
-            const question = document.getElementById('question').value;
+    document.getElementById('questionForm').onsubmit = async (e) => {
+        e.preventDefault();
+        const question = document.getElementById('question').value;
+        
+        try {
             const response = await fetch('/get-answer', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ question }),
             });
+
             const data = await response.json();
-            document.getElementById('answer').innerText = data.answer;
-        };
-    </script>
+
+            if (response.ok) {
+                // If the request is successful, display the answer
+                document.getElementById('answer').innerText = data.answer;
+            } else {
+                // If the request fails, display an error message
+                document.getElementById('answer').innerText = data.error || "An error occurred. Please try again.";
+            }
+        } catch (error) {
+            // Catch any other errors and display them
+            document.getElementById('answer').innerText = "An error occurred. Please try again.";
+            console.error('Error:', error);
+        }
+    };
+</script>
 </body>
 </html>
