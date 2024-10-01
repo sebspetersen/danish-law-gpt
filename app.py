@@ -1,11 +1,18 @@
 import openai
 import os
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app)  # Enable CORS for all routes
 
-# Get the OpenAI API Key from environment variables
+# Set the OpenAI API key from the environment variable
 openai.api_key = os.getenv("OPENAI_API_KEY")
+
+# Route for the homepage
+@app.route('/')
+def home():
+    return render_template('index.html')
 
 @app.route('/get-answer', methods=['POST'])
 def get_answer():
