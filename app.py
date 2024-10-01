@@ -18,7 +18,11 @@ def home():
 def get_answer():
     data = request.get_json()
     question = data.get('question')
-    
+
+    # Add some error checking for the question input
+    if not question:
+        return jsonify({"error": "No question provided"}), 400
+
     prompt = f"As a Danish legal expert, answer the following question: '{question}'. Your answer should be supported by references to Danish law, providing accurate citations."
 
     try:
@@ -32,7 +36,9 @@ def get_answer():
         answer = response.choices[0].message['content']
         return jsonify({"answer": answer})
     except Exception as e:
-        return jsonify({"error": str(e)})
+        print(f"Error: {str(e)}")  # Log the error for debugging
+        return jsonify({"error": "There was an error processing your request"}), 500
+
 
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 5000))
