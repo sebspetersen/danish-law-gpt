@@ -27,7 +27,7 @@ def get_answer():
 
     try:
         response = openai.ChatCompletion.create(
-            model="gpt-4",
+            model="gpt-3.5-turbo",
             messages=[
                 {"role": "system", "content": "You are a Danish law expert. Answer every question like a lawyer would, always citing relevant Danish law."},
                 {"role": "user", "content": prompt},
