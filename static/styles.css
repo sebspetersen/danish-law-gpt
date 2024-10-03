@@ -104,3 +104,19 @@ body, html {
     background-color: #005bb5;
 }
 
+.response-section {
+    margin-bottom: 20px;
+    padding: 10px;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+}
+
+.response-section h3 {
+    margin-top: 0;
+    color: #0078fe;
+}
+
+.response-section p {
+    margin: 0;
+    line-height: 1.6;
+}
