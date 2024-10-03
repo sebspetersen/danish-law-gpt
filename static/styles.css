@@ -9,6 +9,7 @@ body, html {
     display: flex;
     justify-content: center;
     align-items: center;
+    width: 100%;
 }
 
 /* Full Screen Chat Container */
@@ -16,10 +17,10 @@ body, html {
     width: 100vw;
     height: 100vh;
     background-color: #ffffff;
-    border-radius: 0;
     display: flex;
     flex-direction: column;
     box-shadow: none;
+    overflow: hidden;
 }
 
 /* Header */
@@ -44,12 +45,15 @@ body, html {
     flex: 1;
     padding: 20px;
     overflow-y: auto;
+    overflow-x: hidden;
     background-color: #f0f2f5;
     display: flex;
     flex-direction: column;
     gap: 15px;
     scrollbar-width: thin;
     scrollbar-color: #0078fe #f0f2f5;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .chat-box::-webkit-scrollbar {
@@ -63,12 +67,13 @@ body, html {
 
 /* Messages */
 .message {
-    max-width: 75%;
+    max-width: calc(100% - 40px); /* Make sure the messages do not exceed the chat box width */
     padding: 15px;
     border-radius: 10px;
     line-height: 1.6;
     font-size: 1rem;
     transition: all 0.3s ease-in-out;
+    box-sizing: border-box;
 }
 
 .message.user {
@@ -96,9 +101,12 @@ body, html {
 /* Chat Input */
 .chat-input-container {
     display: flex;
-    padding: 20px;
+    padding: 15px 20px;
     background-color: #ffffff;
     border-top: 1px solid #ddd;
+    box-sizing: border-box;
+    width: 100%;
+    align-items: center;
 }
 
 #question {
@@ -110,6 +118,9 @@ body, html {
     font-size: 1rem;
     outline: none;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box;
+    max-height: 100px; /* Prevent the textarea from getting too tall */
+    overflow-y: auto;
 }
 
 #send-button {
