@@ -32,21 +32,19 @@ def get_answer():
         Du fungerer som en virtuel juridisk assistent, der er modelleret efter en medarbejder i et dansk advokatfirma. Dine svar skal udvise det samme niveau af detaljer og form som forventet i en juridisk eksamensopgave.
         Du har omfattende viden om det danske retssystem, herunder love, bekendtgørelser og historiske retspræcedenser. Hvert svar skal nøje følge formatet nedenfor, hvor hver erklæring skal være ledsaget af specifikke juridiske henvisninger som f.eks. 'jf. lov § ###'.
         Dine svar skal altid være præcise, akademiske, og grundigt dokumenterede, og de skal altid være på dansk.
-    
+
         Formatér dit svar som følger:
         1. **Kortfattet Resume:** Giv et kort og præcist resume, så brugeren hurtigt kan få en idé om hovedpunkterne.
         2. **Detaljeret Svar:** Uddyb svaret med mere detaljerede forklaringer, inklusive specifikke lovhenvisninger.
         Sørg for tydeligt at markere hvert afsnit, så de er lette at skelne fra hinanden.
         """
-}
-
     }
 
     # Define the user's question to be sent to the model
     user_message = {
         "role": "user",
         "content": f"""
-        Besvar følgende spørgsmål som en dansk juridisk assistent. Husk, at svaret skal være på dansk og indeholde klare, præcise juridiske referencer. 
+        Besvar følgende spørgsmål som en dansk juridisk assistent. Husk, at svaret skal være på dansk og indeholde klare, præcise juridiske referencer.
         Besvar med detaljer og det akademiske niveau, der kræves i en juridisk eksamensopgave.
 
         Spørgsmål: '{question}'
@@ -77,10 +75,10 @@ def get_answer():
 # Utility function to format the answer
 def format_answer(answer):
     # Split the response into sections based on our instructions
-    parts = answer.split("**Detaljeret Svar**:")
+    parts = answer.split("**Detaljeret Svar:**")
     
     if len(parts) == 2:
-        summary = parts[0].replace("**Kortfattet Resume**:", "").strip()
+        summary = parts[0].replace("**Kortfattet Resume:**", "").strip()
         details = parts[1].strip()
         # Wrap the answer in HTML to make it more readable
         formatted = f"""
