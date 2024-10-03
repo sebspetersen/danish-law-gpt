@@ -47,7 +47,7 @@
                 removeLoadingMessage();
 
                 if (response.ok) {
-                    appendMessage('bot', data.answer);
+                    appendFormattedMessage('bot', data.answer);
                 } else {
                     appendMessage('bot', data.error || "An error occurred. Please try again.");
                 }
@@ -67,8 +67,13 @@
             chatBox.scrollTop = chatBox.scrollHeight; // Scroll to the latest message
         }
 
-        function appendLoadingMessage() {
-            appendMessage('loading', '...');
+        function appendFormattedMessage(sender, formattedHtml) {
+            const chatBox = document.getElementById('chat-box');
+            const messageElement = document.createElement('div');
+            messageElement.classList.add('message', sender);
+            messageElement.innerHTML = formattedHtml;
+            chatBox.appendChild(messageElement);
+            chatBox.scrollTop = chatBox.scrollHeight; // Scroll to the latest message
         }
 
         function removeLoadingMessage() {
