@@ -11,26 +11,15 @@ body, html {
     align-items: center;
 }
 
-/* Main Container */
-.main-container {
+/* Full Screen Chat Container */
+.chat-container {
     width: 100vw;
     height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-/* Chat Container */
-.chat-container {
-    width: 95%;
-    max-width: 800px;
-    height: 90%;
     background-color: #ffffff;
-    border-radius: 20px;
+    border-radius: 0;
     display: flex;
     flex-direction: column;
-    overflow: hidden;
-    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+    box-shadow: none;
 }
 
 /* Header */
@@ -43,8 +32,6 @@ body, html {
     justify-content: center;
     font-size: 1.8rem;
     font-weight: bold;
-    border-top-left-radius: 20px;
-    border-top-right-radius: 20px;
     text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.3);
 }
 
