@@ -1,4 +1,4 @@
-/* Reset some default styles */
+/* Reset and general styles */
 body, html {
     margin: 0;
     padding: 0;
@@ -32,6 +32,8 @@ body, html {
     text-align: center;
     font-size: 1.2rem;
     font-weight: bold;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
 }
 
 /* Chat Box */
@@ -41,15 +43,16 @@ body, html {
     overflow-y: auto;
     display: flex;
     flex-direction: column;
+    gap: 10px;
 }
 
 /* Messages */
 .message {
-    margin-bottom: 15px;
-    max-width: 80%;
+    max-width: 75%;
     padding: 10px;
     border-radius: 10px;
-    line-height: 1.4;
+    line-height: 1.6;
+    font-size: 0.95rem;
 }
 
 .message.user {
@@ -104,19 +107,24 @@ body, html {
     background-color: #005bb5;
 }
 
+/* Formatting for organized response sections */
 .response-section {
-    margin-bottom: 20px;
-    padding: 10px;
-    border-radius: 5px;
-    background-color: #f9f9f9;
+    background-color: #ffffff;
+    border-left: 4px solid #0078fe;
+    padding: 10px 15px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    border-radius: 8px;
 }
 
 .response-section h3 {
     margin-top: 0;
     color: #0078fe;
+    font-size: 1rem;
 }
 
 .response-section p {
     margin: 0;
     line-height: 1.6;
+    font-size: 0.95rem;
 }
