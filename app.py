@@ -29,13 +29,13 @@ def get_answer():
     system_message = {
         "role": "system",
         "content": """
-        Du fungerer som en virtuel juridisk assistent, der er modelleret efter en medarbejder i et dansk advokatfirma. Dine svar skal udvise det samme niveau af detaljer og form som forventet i en juridisk eksamensopgave. 
-        Du har omfattende viden om det danske retssystem, herunder love, bekendtgørelser og historiske retspræcedenser. Hvert svar skal nøje følge den format, der kræves i juridiske eksamener, hvor enhver erklæring skal være ledsaget af specifikke juridiske henvisninger som f.eks. 'jf. lov § ###'.
+        Du fungerer som en virtuel juridisk assistent, der er modelleret efter en medarbejder i et dansk advokatfirma. Dine svar skal udvise det samme niveau af detaljer og form som forventet i en juridisk eksamensopgave.
+        Du har omfattende viden om det danske retssystem, herunder love, bekendtgørelser og historiske retspræcedenser. Hvert svar skal nøje følge det format, der kræves i juridiske eksamener, hvor enhver erklæring skal være ledsaget af specifikke juridiske henvisninger som f.eks. 'jf. lov § ###'.
         Dine svar skal altid være præcise, akademiske, og grundigt dokumenterede, og de skal altid være på dansk.
-        
-        Eksempel:
-        Spørgsmål: "Hvad er reglerne for forældremyndighed i Danmark?"
-        Svar: "Reglerne om forældremyndighed findes i Forældreansvarsloven, jf. lovbekendtgørelse nr. 1085 af 2021. Ifølge § 4 har begge forældre som udgangspunkt fælles forældremyndighed, medmindre andet er aftalt eller bestemt af retten, jf. Forældreansvarsloven § 11. Dette betyder, at begge forældre har lige rettigheder og ansvar i forhold til barnets opvækst og trivsel."
+
+        Strukturer dit svar som følger:
+        1. **Kortfattet Resume**: Giv et kortfattet resume af svaret, så brugeren hurtigt kan få en ide om hovedpunkterne.
+        2. **Detaljeret Svar**: Giv herefter en mere detaljeret redegørelse, inklusive specifikke lovhenvisninger og uddybende forklaringer.
         """
     }
 
@@ -58,7 +58,10 @@ def get_answer():
         )
         # Extract the answer from the response
         answer = response.choices[0].message['content']
-        return jsonify({"answer": answer})
+
+        # Format the answer for better display (split into summary and detailed sections)
+        formatted_answer = format_answer(answer)
+        return jsonify({"answer": formatted_answer})
     except openai.error.OpenAIError as e:
         # Log and return an error if the OpenAI API request fails
         print(f"OpenAI API error: {str(e)}")
@@ -67,6 +70,30 @@ def get_answer():
         # Catch all other exceptions
         print(f"Unexpected error: {str(e)}")
         return jsonify({"error": "Der opstod en uventet fejl. Prøv venligst igen senere."}), 500
+
+# Utility function to format the answer
+def format_answer(answer):
+    # Split the response into sections based on our instructions
+    parts = answer.split("**Detaljeret Svar**:")
+    
+    if len(parts) == 2:
+        summary = parts[0].replace("**Kortfattet Resume**:", "").strip()
+        details = parts[1].strip()
+        # Wrap the answer in HTML to make it more readable
+        formatted = f"""
+        <div class="response-section">
+            <h3>Kortfattet Resume:</h3>
+            <p>{summary}</p>
+        </div>
+        <div class="response-section">
+            <h3>Detaljeret Svar:</h3>
+            <p>{details}</p>
+        </div>
+        """
+        return formatted
+    else:
+        # If the formatting is not as expected, return the raw response
+        return f"<p>{answer}</p>"
 
 # Run the application
 if __name__ == '__main__':
