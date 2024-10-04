@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="da">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="static/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <title>Danish Law Expert Chat</title>
+</head>
+
+<body>
+    <div class="main-container">
+        <div class="sidebar">
+            <h2>Conversations</h2>
+            <ul id="conversation-list">
+                <!-- Example conversations -->
+                <li class="conversation-item active">User 1: Property Rights</li>
+                <li class="conversation-item">User 2: Contract Law</li>
+                <li class="conversation-item">User 3: Tax Queries</li>
+            </ul>
+        </div>
+
+        <div class="chat-container">
+            <div class="chat-header">
+                <h1><i class="fas fa-balance-scale"></i> Danish Law Expert</h1>
+            </div>
+            <div id="chat-box" class="chat-box">
+                <!-- Messages for the selected conversation will appear here -->
+            </div>
+            <div class="chat-input-container">
+                <textarea id="question" placeholder="Type your legal question..." rows="2"></textarea>
+                <button id="send-button"><i class="fas fa-paper-plane"></i></button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // JavaScript for handling the interaction between the sidebar and the chat
+
+        // Simulated example of changing conversations
+        document.querySelectorAll('.conversation-item').forEach(item => {
+            item.addEventListener('click', () => {
+                document.querySelectorAll('.conversation-item').forEach(i => i.classList.remove('active'));
+                item.classList.add('active');
+                // Load the conversation for the selected item (simulated)
+                document.getElementById('chat-box').innerHTML = `<div class="message bot"><span>Loading conversation for: ${item.innerText}</span></div>`;
+            });
+        });
+
+        document.getElementById('send-button').onclick = async () => {
+            const question = document.getElementById('question').value.trim();
+            if (!question) {
+                return;
+            }
+
+            // Display user message
+            appendMessage('user', question);
+
+            // Clear input box
+            document.getElementById('question').value = '';
+
+            // Fetch answer from the server (simulated for now)
+            try {
+                appendMessage('loading', '...');
+                setTimeout(() => {
+                    removeLoadingMessage();
+                    appendFormattedMessage('bot', `This is the response to: "${question}"`);
+                }, 1000); // Simulating server delay
+            } catch (error) {
+                removeLoadingMessage();
+                appendMessage('bot', "An error occurred. Please try again.");
+                console.error('Error:', error);
+            }
+        };
+
+        function appendMessage(sender, message) {
+            const chatBox = document.getElementById('chat-box');
+            const messageElement = document.createElement('div');
+            messageElement.classList.add('message', sender);
+            messageElement.innerHTML = `<span>${message}</span>`;
+            chatBox.appendChild(messageElement);
+            chatBox.scrollTop = chatBox.scrollHeight; // Scroll to the latest message
+        }
+
+        function appendFormattedMessage(sender, formattedHtml) {
+            const chatBox = document.getElementById('chat-box');
+            const messageElement = document.createElement('div');
+            messageElement.classList.add('message', sender);
+            messageElement.innerHTML = formattedHtml;
+            chatBox.appendChild(messageElement);
+            chatBox.scrollTop = chatBox.scrollHeight; // Scroll to the latest message
+        }
+
+        function removeLoadingMessage() {
+            const chatBox = document.getElementById('chat-box');
+            const loadingMessage = chatBox.querySelector('.message.loading');
+            if (loadingMessage) {
+                chatBox.removeChild(loadingMessage);
+            }
+        }
+    </script>
+</body>
+
+</html>
