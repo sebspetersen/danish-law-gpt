@@ -10,33 +10,24 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # Step 1: Check out the repository
       - name: Checkout Repository
         uses: actions/checkout@v2
 
-      # Step 2: Set up Node.js for building the React app
       - name: Set up Node
         uses: actions/setup-node@v2
         with:
           node-version: '16'
 
-      # Step 3: Install dependencies and build React app
       - name: Install dependencies and build
         working-directory: ./frontend
         run: |
           npm install
           npm run build
 
-      # Step 4: Deploy the built files to Heroku
       - name: Deploy to Heroku
         uses: akhileshns/heroku-deploy@v3.12.12
         with:
           heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
           heroku_app_name: your-heroku-app-name
           heroku_email: your-email@example.com
-          procfile: false
           working_directory: ./frontend/build
-
-      # Optional: Notify success
-      - name: Deployment Notification
-        run: echo "React app has been successfully deployed to Heroku"
