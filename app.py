@@ -18,6 +18,7 @@ def home():
 # Define a route for getting an answer from the OpenAI API
 @app.route('/get-answer', methods=['POST'])
 def get_answer():
+    # Extract data from the request
     data = request.get_json()
     question = data.get('question')
 
