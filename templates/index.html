@@ -4,22 +4,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="static/styles.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <title>Danish Law Expert Chat</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@^3.0/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 
-<body>
-    <div class="chat-container">
-        <div class="chat-header">
-            <h1><i class="fas fa-balance-scale"></i> Danish Law Expert</h1>
+<body class="bg-gradient-to-r from-purple-500 to-blue-500 flex items-center justify-center h-screen">
+    <div class="w-full max-w-4xl h-full max-h-screen bg-white rounded-lg shadow-lg flex flex-col overflow-hidden">
+        <!-- Header -->
+        <div class="bg-blue-700 text-white py-4 px-6 flex items-center justify-between">
+            <h1 class="text-2xl font-bold"><i class="fas fa-balance-scale mr-3"></i>Danish Law Expert</h1>
         </div>
-        <div id="chat-box" class="chat-box">
+
+        <!-- Chat Box -->
+        <div id="chat-box" class="flex-1 p-6 overflow-y-auto space-y-4 bg-gray-100">
             <!-- Messages will be dynamically appended here -->
         </div>
-        <div class="chat-input-container">
-            <textarea id="question" placeholder="Type your legal question..." rows="2"></textarea>
-            <button id="send-button"><i class="fas fa-paper-plane"></i></button>
+
+        <!-- Input Box -->
+        <div class="bg-white p-4 flex items-center border-t border-gray-300">
+            <textarea id="question" placeholder="Type your legal question..." rows="2" class="flex-1 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"></textarea>
+            <button id="send-button" class="ml-4 p-3 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition duration-300">
+                <i class="fas fa-paper-plane"></i>
+            </button>
         </div>
     </div>
 
@@ -64,24 +71,30 @@
         function appendMessage(sender, message) {
             const chatBox = document.getElementById('chat-box');
             const messageElement = document.createElement('div');
-            messageElement.classList.add('message', sender);
-            messageElement.innerHTML = `<span>${message}</span>`;
+            messageElement.classList.add('p-4', 'rounded-lg', 'shadow-md', 'max-w-lg');
+            if (sender === 'user') {
+                messageElement.classList.add('bg-green-200', 'self-end');
+                messageElement.innerHTML = `<span class='font-medium'>You:</span> ${message}`;
+            } else if (sender === 'loading') {
+                messageElement.classList.add('bg-gray-200', 'text-center', 'italic');
+                messageElement.textContent = message;
+            }
             chatBox.appendChild(messageElement);
-            chatBox.scrollTop = chatBox.scrollHeight; // Scroll to the latest message
+            chatBox.scrollTop = chatBox.scrollHeight;
         }
 
         function appendFormattedMessage(sender, formattedHtml) {
             const chatBox = document.getElementById('chat-box');
             const messageElement = document.createElement('div');
-            messageElement.classList.add('message', sender);
+            messageElement.classList.add('p-4', 'bg-white', 'rounded-lg', 'shadow-md', 'max-w-lg', 'self-start');
             messageElement.innerHTML = formattedHtml;
             chatBox.appendChild(messageElement);
-            chatBox.scrollTop = chatBox.scrollHeight; // Scroll to the latest message
+            chatBox.scrollTop = chatBox.scrollHeight;
         }
 
         function removeLoadingMessage() {
             const chatBox = document.getElementById('chat-box');
-            const loadingMessage = chatBox.querySelector('.message.loading');
+            const loadingMessage = chatBox.querySelector('.text-center');
             if (loadingMessage) {
                 chatBox.removeChild(loadingMessage);
             }
