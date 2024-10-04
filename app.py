@@ -1,10 +1,10 @@
 import openai
 import os
-from flask import Flask, request, jsonify, render_template
+from flask import Flask, request, jsonify, render_template, send_from_directory
 from flask_cors import CORS
 
 # Initialize the Flask application
-app = Flask(__name__)
+app = Flask(__name__, static_folder='static/build', template_folder='templates')
 CORS(app)  # Enable Cross-Origin Resource Sharing
 
 # Get the OpenAI API Key from the environment variables
@@ -13,12 +13,16 @@ openai.api_key = os.getenv("OPENAI_API_KEY")
 # Define a route for the homepage
 @app.route('/')
 def home():
-    return render_template('index.html')
+    return send_from_directory(app.static_folder, 'index.html')
+
+# Define a route to serve static files like CSS and JS from React build
+@app.route('/static/<path:path>')
+def serve_static(path):
+    return send_from_directory(app.static_folder, path)
 
 # Define a route for getting an answer from the OpenAI API
 @app.route('/get-answer', methods=['POST'])
 def get_answer():
-    # Extract data from the request
     data = request.get_json()
     question = data.get('question')
 
