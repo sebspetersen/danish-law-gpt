@@ -4,69 +4,49 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Danish Law Expert Chat</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@^3.0/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="static/styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <title>Danish Law Expert Chat</title>
 </head>
 
-<body class="bg-gray-100 flex items-center justify-center min-h-screen">
-    <div class="w-full max-w-7xl h-full max-h-screen bg-white rounded-2xl shadow-2xl flex overflow-hidden">
-        <!-- Sidebar: Conversation List -->
-        <div class="w-1/4 bg-gray-100 border-r border-gray-300 p-4">
-            <div class="flex items-center mb-4">
-                <input type="text" placeholder="Search" class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-            </div>
-            <div id="conversation-list" class="flex-1 overflow-y-auto space-y-4">
-                <!-- Conversation threads will be dynamically appended here -->
-                <div class="p-4 bg-white rounded-lg shadow cursor-pointer hover:bg-gray-200 transition" onclick="selectConversation('Conversation 1')">
-                    <h2 class="font-semibold">Conversation 1</h2>
-                    <p class="text-sm text-gray-500">Last message preview...</p>
-                </div>
-                <div class="p-4 bg-white rounded-lg shadow cursor-pointer hover:bg-gray-200 transition" onclick="selectConversation('Conversation 2')">
-                    <h2 class="font-semibold">Conversation 2</h2>
-                    <p class="text-sm text-gray-500">Last message preview...</p>
-                </div>
-            </div>
+<body>
+    <div class="main-container">
+        <div class="sidebar">
+            <h2>Conversations</h2>
+            <ul id="conversation-list">
+                <!-- Example conversations -->
+                <li class="conversation-item active">User 1: Property Rights</li>
+                <li class="conversation-item">User 2: Contract Law</li>
+                <li class="conversation-item">User 3: Tax Queries</li>
+            </ul>
         </div>
 
-        <!-- Main Content: Conversation Thread -->
-        <div class="flex-1 flex flex-col">
-            <!-- Header -->
-            <div class="bg-gradient-to-r from-blue-700 to-blue-900 text-white py-4 px-6 flex items-center justify-between">
-                <h1 class="text-2xl font-bold flex items-center">
-                    <i class="fas fa-balance-scale mr-3 text-3xl"></i>Danish Law Expert
-                </h1>
-                <button class="text-white bg-blue-600 px-4 py-2 rounded-lg hover:bg-blue-800 transition duration-300 font-semibold">Login</button>
+        <div class="chat-container">
+            <div class="chat-header">
+                <h1><i class="fas fa-balance-scale"></i> Danish Law Expert</h1>
             </div>
-
-            <!-- Chat Thread Area -->
-            <div id="chat-thread" class="flex-1 p-6 overflow-y-auto space-y-4 bg-white border-b border-gray-300">
-                <!-- Chat thread messages will be dynamically appended here -->
-                <div id="thread-header" class="mb-4">
-                    <h2 class="text-xl font-semibold">Re: Legal Inquiry</h2>
-                    <p class="text-sm text-gray-600">Summary of previous messages...</p>
-                </div>
-                <div id="chat-box" class="space-y-4">
-                    <!-- Messages will be appended here -->
-                </div>
+            <div id="chat-box" class="chat-box">
+                <!-- Messages for the selected conversation will appear here -->
             </div>
-
-            <!-- Input Box -->
-            <div class="bg-white p-4 flex items-center border-t border-gray-300">
-                <textarea id="question" placeholder="Type your legal question..." rows="2" class="flex-1 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none text-lg"></textarea>
-                <button id="send-button" class="ml-4 p-3 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition duration-300 text-xl w-14 h-14 flex items-center justify-center shadow-md">
-                    <i class="fas fa-paper-plane"></i>
-                </button>
+            <div class="chat-input-container">
+                <textarea id="question" placeholder="Type your legal question..." rows="2"></textarea>
+                <button id="send-button"><i class="fas fa-paper-plane"></i></button>
             </div>
         </div>
     </div>
 
     <script>
-        function selectConversation(conversationName) {
-            // This function would load the conversation into the chat-box
-            document.getElementById('thread-header').innerHTML = `<h2 class='text-xl font-semibold'>Re: ${conversationName}</h2><p class='text-sm text-gray-600'>Summary of previous messages...</p>`;
-            document.getElementById('chat-box').innerHTML = "";
-        }
+        // JavaScript for handling the interaction between the sidebar and the chat
+
+        // Simulated example of changing conversations
+        document.querySelectorAll('.conversation-item').forEach(item => {
+            item.addEventListener('click', () => {
+                document.querySelectorAll('.conversation-item').forEach(i => i.classList.remove('active'));
+                item.classList.add('active');
+                // Load the conversation for the selected item (simulated)
+                document.getElementById('chat-box').innerHTML = `<div class="message bot"><span>Loading conversation for: ${item.innerText}</span></div>`;
+            });
+        });
 
         document.getElementById('send-button').onclick = async () => {
             const question = document.getElementById('question').value.trim();
@@ -80,24 +60,13 @@
             // Clear input box
             document.getElementById('question').value = '';
 
-            // Fetch answer from the server
+            // Fetch answer from the server (simulated for now)
             try {
                 appendMessage('loading', '...');
-                const response = await fetch('/get-answer', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ question }),
-                });
-                const data = await response.json();
-
-                // Remove loading message
-                removeLoadingMessage();
-
-                if (response.ok) {
-                    appendFormattedMessage('bot', data.answer);
-                } else {
-                    appendMessage('bot', data.error || "An error occurred. Please try again.");
-                }
+                setTimeout(() => {
+                    removeLoadingMessage();
+                    appendFormattedMessage('bot', `This is the response to: "${question}"`);
+                }, 1000); // Simulating server delay
             } catch (error) {
                 removeLoadingMessage();
                 appendMessage('bot', "An error occurred. Please try again.");
@@ -108,30 +77,24 @@
         function appendMessage(sender, message) {
             const chatBox = document.getElementById('chat-box');
             const messageElement = document.createElement('div');
-            messageElement.classList.add('p-5', 'rounded-lg', 'shadow-md', 'max-w-lg', 'text-lg');
-            if (sender === 'user') {
-                messageElement.classList.add('bg-green-200', 'self-end');
-                messageElement.innerHTML = `<span class='font-semibold'>You:</span> ${message}`;
-            } else if (sender === 'loading') {
-                messageElement.classList.add('bg-gray-300', 'text-center', 'italic');
-                messageElement.textContent = message;
-            }
+            messageElement.classList.add('message', sender);
+            messageElement.innerHTML = `<span>${message}</span>`;
             chatBox.appendChild(messageElement);
-            chatBox.scrollTop = chatBox.scrollHeight;
+            chatBox.scrollTop = chatBox.scrollHeight; // Scroll to the latest message
         }
 
         function appendFormattedMessage(sender, formattedHtml) {
             const chatBox = document.getElementById('chat-box');
             const messageElement = document.createElement('div');
-            messageElement.classList.add('p-5', 'bg-white', 'rounded-lg', 'shadow-md', 'max-w-lg', 'self-start', 'text-lg');
+            messageElement.classList.add('message', sender);
             messageElement.innerHTML = formattedHtml;
             chatBox.appendChild(messageElement);
-            chatBox.scrollTop = chatBox.scrollHeight;
+            chatBox.scrollTop = chatBox.scrollHeight; // Scroll to the latest message
         }
 
         function removeLoadingMessage() {
             const chatBox = document.getElementById('chat-box');
-            const loadingMessage = chatBox.querySelector('.text-center');
+            const loadingMessage = chatBox.querySelector('.message.loading');
             if (loadingMessage) {
                 chatBox.removeChild(loadingMessage);
             }
